@@ -1,0 +1,17 @@
+.star-rating {
+    line-height: 32px;
+    font-size: 1.25em;
+}
+
+.star-rating .fa-star {
+    color: #e6e600;
+}
+
+.star-rating1 .fa-star {
+    color: #e6e600;
+}
+
+#myModal .star-rating1 {
+    line-height: 32px;
+    font-size: 6.6em;
+}
