@@ -15,7 +15,9 @@
   "author": "Tashi",
   "license": "ISC",
   "devDependencies": {
-    "@truffle/hdwallet-provider": "^1.2.0",
+    "@truffle/hdwallet-provider": "^1.2.0"
+  },
+  "dependencies": {
     "lite-server": "^2.6.1"
   }
 }
