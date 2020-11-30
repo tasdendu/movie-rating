@@ -3,6 +3,21 @@ App = {
   contracts: {},
 
   init: async function () {
+    $.getJSON('../movies.json', function (data) {
+      var moviesRow = $('#moviesRow');
+      var movieTemplate = $('#movieTemplate');
+
+      for (i = 0; i < data.length; i++) {
+        movieTemplate.find('.panel-title').text(data[i].name);
+        movieTemplate.find('img').attr('src', data[i].picture);
+        movieTemplate.find('.movie-id').text(data[i].id);
+        movieTemplate.find('.movie-name').text(data[i].name);
+        movieTemplate.find('.btn-rate').attr('data-id', data[i].id);
+
+        moviesRow.append(movieTemplate.html());
+      }
+    });
+
     return await App.initWeb3();
   },
 
@@ -40,7 +55,7 @@ App = {
       App.contracts.MovieRating.setProvider(App.web3Provider);
 
       // Use our contract to retrieve and mark the adopted movies
-      return App.addMovies();
+      return App.showRating();
     });
 
     return App.bindEvents();
@@ -49,26 +64,6 @@ App = {
   bindEvents: function () {
     $(document).on('click', '.btn-rate', App.assignValue);
     $(document).on('click', '#rate-it', App.rateMovie);
-  },
-
-  addMovies: function () {
-    // Load movies.
-    $.getJSON('../movies.json', function (data) {
-      var moviesRow = $('#moviesRow');
-      var movieTemplate = $('#movieTemplate');
-
-      for (i = 0; i < data.length; i++) {
-        movieTemplate.find('.panel-title').text(data[i].name);
-        movieTemplate.find('img').attr('src', data[i].picture);
-        movieTemplate.find('.movie-id').text(data[i].id);
-        movieTemplate.find('.movie-name').text(data[i].name);
-        movieTemplate.find('.btn-rate').attr('data-id', data[i].id);
-
-        moviesRow.append(movieTemplate.html());
-      }
-    });
-
-    return App.showRating();
   },
 
   showRating: function () {
