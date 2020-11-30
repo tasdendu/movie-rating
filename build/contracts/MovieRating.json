@@ -10046,6 +10046,76 @@
     "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {
+        "0xdf42019df16172a4cf62587bc192fc5a8776766d2663cb4d32ced057e8f4a280": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_movieId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "_movieName",
+              "type": "string"
+            }
+          ],
+          "name": "MovieAdded",
+          "type": "event"
+        },
+        "0x282ec7f26adf5b4c179a5cc847050a203cc4b2946aa84dad1ff4b2230771ab80": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_movieId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_accomulatedRating",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_rateCount",
+              "type": "uint256"
+            }
+          ],
+          "name": "MovieInfo",
+          "type": "event"
+        },
+        "0xc7de3682c938b7b4709db26dba4141f4c7609cd6bfb24f2329cb0dbe8c42689d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_rater",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_rating",
+              "type": "uint256"
+            }
+          ],
+          "name": "MovieRated",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x110e586F157cC1474D31028fd666e4003007adbF",
+      "transactionHash": "0xa27b47c2c771fb101bf424745542bd03f153f4165378ac1bb000586753607370"
+    },
     "5777": {
       "events": {
         "0xdf42019df16172a4cf62587bc192fc5a8776766d2663cb4d32ced057e8f4a280": {
@@ -10118,7 +10188,7 @@
     }
   },
   "schemaVersion": "3.3.2",
-  "updatedAt": "2020-11-30T12:13:54.480Z",
+  "updatedAt": "2020-11-30T12:34:23.766Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
