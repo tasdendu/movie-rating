@@ -114,7 +114,7 @@ App = {
         MovieRatingInstance = instance;
 
         // Execute adopt as a transaction by sending account
-        return MovieRatingInstance.RateMovie(movieId, rating, { from: account });
+        return MovieRatingInstance.rateMovie(movieId, rating, { from: account });
       }).then(function (result) {
         $('#myModal').modal('hide');
         $('.star-rating1 .fa').removeClass('fa-star').addClass('fa-star-o');

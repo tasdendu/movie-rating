@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 contract MovieRating {
+    address owner;
     Movie[] movies;
     uint256[] public movieIds;
     uint256[15] public averageMovieRatings;
@@ -19,31 +20,46 @@ contract MovieRating {
     }
 
     constructor() public {
+        owner = msg.sender;
+
         for (uint256 i = 1; i <= 15; i++) {
-            AddMovie(i, string(abi.encodePacked("Movie ", i)));
+            addMovie(i, string(abi.encodePacked("Movie ", i)));
         }
     }
 
-    function AddMovie(uint256 _movieId, string memory _movieName) public returns (uint256){
-        bool isExists = MovieExists(_movieId);
+    modifier onlyOwner() {
+        require(owner == msg.sender, 'Only owner can add the movie');
+        _;
+    }
 
-        require(isExists == false, "The entered movie ID already exists");
+    modifier movieExists(uint256 _movieId) {
+        bool isExists = isMovieExists(_movieId);
+        require(isExists == false, 'The entered movie ID already exists');
+        _;
+    }
 
+    modifier movieNotExists(uint256 _movieId) {
+        bool isExists = isMovieExists(_movieId);
+        require(isExists == true, 'The entered movie ID not found');
+        _;
+    }
+
+    modifier correctRatingValue(uint _rating) {
+        require(_rating > 0 && _rating <= 5, "The rating should be within 1-5");
+        _;
+    }
+
+    function addMovie(uint256 _movieId, string memory _movieName) public onlyOwner movieExists(_movieId) returns (uint256){
         Movie memory movie = Movie(_movieId, _movieName);
         movies.push(movie);
-        movieIds.push(_movieId);
 
         emit MovieAdded(_movieId, _movieName);
 
         return _movieId;
     }
 
-    function RateMovie(uint256 _movieId, uint _rating) public {
-        bool isExists = MovieExists(_movieId);
+    function rateMovie(uint256 _movieId, uint _rating) public movieNotExists(_movieId) correctRatingValue(_rating) {
         uint256 rate = movieRatings[_movieId][msg.sender];
-
-        require(isExists == true, "The entered movie ID not found");
-        require(_rating > 0 && _rating <= 5, "The rating should be within 1-5");
 
         movieRatings[_movieId][msg.sender] = _rating;
 
@@ -59,7 +75,7 @@ contract MovieRating {
         emit MovieRated(msg.sender, _rating);
     }
 
-    function MovieExists(uint256 _movieId) private view returns (bool){
+    function isMovieExists(uint256 _movieId) private view returns (bool){
         bool isExists = false;
 
         for (uint256 i = 0; i < movies.length; i++) {
@@ -72,8 +88,8 @@ contract MovieRating {
         return isExists;
     }
 
-    function TotalRating(uint256 _movieId) public view returns (uint256){
-        bool isExists = MovieExists(_movieId);
+    function getAverageMovieRating(uint256 _movieId) public view returns (uint256){
+        bool isExists = isMovieExists(_movieId);
 
         if (isExists == false || rateCount[_movieId] == 0) {
             return 0;
@@ -82,7 +98,12 @@ contract MovieRating {
         return accumulatedRating[_movieId] / rateCount[_movieId];
     }
 
-    function TotalMovies() public view returns (uint256){
+    // Get sessions movie rating
+    function getMyRating(uint256 _movieId) public view returns (uint256){
+        return movieRatings[_movieId][msg.sender];
+    }
+
+    function getTotalMovies() public view returns (uint256){
         uint256 total = movies.length;
 
         return total;
