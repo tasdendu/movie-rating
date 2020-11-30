@@ -9,9 +9,10 @@
   "scripts": {
     "start": "npm run test",
     "dev": "lite-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "lite-server",
+    "test1": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Tashi",
   "license": "ISC",
   "devDependencies": {
     "@truffle/hdwallet-provider": "^1.2.0",
