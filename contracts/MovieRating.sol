@@ -27,28 +27,33 @@ contract MovieRating {
         }
     }
 
+    // Modifier to check if the requester is the owner of the smart contract.
     modifier onlyOwner() {
         require(owner == msg.sender, 'Only owner can add the movie');
         _;
     }
 
+    // Modifier to check for the movie which exist in the smart contract.
     modifier movieExists(uint256 _movieId) {
         bool isExists = isMovieExists(_movieId);
         require(isExists == false, 'The entered movie ID already exists');
         _;
     }
 
+    // Modifier to check for the movie which does not exist smart contract.
     modifier movieNotExists(uint256 _movieId) {
         bool isExists = isMovieExists(_movieId);
         require(isExists == true, 'The entered movie ID not found');
         _;
     }
 
+    // Modifier to check if the person who rate is sending correct rating value or not.
     modifier correctRatingValue(uint _rating) {
         require(_rating > 0 && _rating <= 5, "The rating should be within 1-5");
         _;
     }
 
+    // Action to add new movie to the smart contract.
     function addMovie(uint256 _movieId, string memory _movieName) public onlyOwner movieExists(_movieId) returns (uint256){
         Movie memory movie = Movie(_movieId, _movieName);
         movies.push(movie);
@@ -58,6 +63,7 @@ contract MovieRating {
         return _movieId;
     }
 
+    // Contract action which is triggered during rate button is click on.
     function rateMovie(uint256 _movieId, uint _rating) public movieNotExists(_movieId) correctRatingValue(_rating) {
         uint256 rate = movieRatings[_movieId][msg.sender];
 
@@ -75,6 +81,7 @@ contract MovieRating {
         emit MovieRated(msg.sender, _rating);
     }
 
+    // Check if the movie with same ID already exists or not.
     function isMovieExists(uint256 _movieId) private view returns (bool){
         bool isExists = false;
 
@@ -88,6 +95,7 @@ contract MovieRating {
         return isExists;
     }
 
+    // Returns average movie ratings for the movie.
     function getAverageMovieRating(uint256 _movieId) public view returns (uint256){
         bool isExists = isMovieExists(_movieId);
 
@@ -103,16 +111,24 @@ contract MovieRating {
         return movieRatings[_movieId][msg.sender];
     }
 
+    // Returns total number movie created so far.
     function getTotalMovies() public view returns (uint256){
         uint256 total = movies.length;
 
         return total;
     }
 
-    function getMovieIds() public view returns (uint256[] memory){
-        return movieIds;
+    // Returns total accumulated movie rating.
+    function getTotalMoviesRating(uint256 _movieId) public view returns (uint256){
+        return accumulatedRating[_movieId];
     }
 
+    // Returns number of rating the movie has received so far.
+    function getTotalNoOfRater(uint256 _movieId) public view returns (uint256){
+        return rateCount[_movieId];
+    }
+
+    // Returns list of average movie ratings for the movies
     function getAverageMovieRatings() public view returns (uint256[15] memory) {
         return averageMovieRatings;
     }
